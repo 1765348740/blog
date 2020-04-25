@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+  
+  <title>rocketmq - 薛定谔的猫</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="Spring Boot">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
+  <meta name="description" content="docker 安装rocketmq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rocketmq">
+<meta property="og:url" content="https://1765348740.github.io/blog/2020/04/25/rocketmq/index.html">
+<meta property="og:site_name" content="薛定谔的猫">
+<meta property="og:description" content="docker 安装rocketmq">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-25T07:00:13.000Z">
+<meta property="article:modified_time" content="2020-04-25T07:14:52.657Z">
+<meta property="article:author" content="薛定谔的猫">
+<meta property="article:tag" content="rocketmq">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/blog/css/style.css?v=1587798969593">-->
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/blog/" title="薛定谔的猫" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="薛定谔的猫"></a>
+       </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/blog/" title="薛定谔的猫">
+            <img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="薛定谔的猫" alt="薛定谔的猫">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>2</div>
+        <div><span>标签</span>2</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/blog/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/blog/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/blog/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/20238211" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/nexmoe/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/blog/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/blog/tags/%E6%97%A5%E5%B8%B8%E8%AE%B0%E5%BD%95/" style="font-size: 10px;">日常记录</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/04/">四月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2020 薛定谔的猫
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 56.25%;"> 
+          <img data-src="http://img.netbian.com/file/2020/0410/60df03194fbcc55e1f9311eae66fc9c2.jpg" data-sizes="auto" alt="rocketmq" class="lazyload">
+          <h1>rocketmq</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年04月25日</a>
+    <a><i class="nexmoefont icon-areachart"></i>438 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 2 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+  </div>
+
+  <article>
+    <h1 id="docker-安装rocketmq"><a href="#docker-安装rocketmq" class="headerlink" title="docker 安装rocketmq"></a>docker 安装rocketmq</h1>   <a id="more"></a>
+
+<h2 id="1-安装-Namesrv"><a href="#1-安装-Namesrv" class="headerlink" title="1. 安装 Namesrv"></a><strong>1. 安装 Namesrv</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull rocketmqinc&#x2F;rocketmq:latest</span><br></pre></td></tr></table></figure>
+
+<p><strong>启动容器</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9876:9876 -v &#x2F;data&#x2F;rocketmq&#x2F;logs:&#x2F;root&#x2F;logs -v &#x2F;data&#x2F;rocketmq&#x2F;store:&#x2F;root&#x2F;store --name rmqnamesrv -e &quot;MAX_POSSIBLE_HEAP&#x3D;100000000&quot; docker.io&#x2F;rocketmqinc&#x2F;rocketmq:latest sh mqnamesrv</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-安装-broker-服务器"><a href="#2-安装-broker-服务器" class="headerlink" title="2.安装 broker 服务器"></a><strong>2.安装 broker 服务器</strong></h2><p>与上步是同一个镜像，如果上步完成，此步无需拉取</p>
+<p><strong>创建 broker.conf 文件</strong></p>
+<ol>
+<li>在 /data/rocketmq/conf 目录下创建 broker.conf 文件</li>
+<li>在 broker.conf 中写入如下内容</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">brokerClusterName &#x3D; DefaultCluster</span><br><span class="line">brokerName &#x3D; broker-a brokerId &#x3D; 0 </span><br><span class="line">deleteWhen &#x3D; 04 </span><br><span class="line">fileReservedTime &#x3D; 48 </span><br><span class="line">brokerRole &#x3D; ASYNC_MASTER </span><br><span class="line">flushDiskType &#x3D; ASYNC_FLUSH</span><br><span class="line">brokerIP1 &#x3D; &#123;本地外网 IP&#125; </span><br><span class="line">autoCreateTopicEnable&#x3D;true</span><br></pre></td></tr></table></figure>
+
+<p><strong>brokerIP1 要修改成你自己宿主机的 IP</strong></p>
+<p><strong>启动容器</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 10911:10911 -p 10909:10909 -v  &#x2F;data&#x2F;rocketmq&#x2F;logs:&#x2F;root&#x2F;logs -v  &#x2F;data&#x2F;rocketmq&#x2F;store:&#x2F;root&#x2F;store -v  &#x2F;data&#x2F;rocketmq&#x2F;conf&#x2F;broker.conf:&#x2F;opt&#x2F;rocketmq-latest&#x2F;conf&#x2F;broker.conf --name rmqbroker --link rmqnamesrv:namesrv -e &quot;NAMESRV_ADDR&#x3D;namesrv:9876&quot; -e &quot;MAX_POSSIBLE_HEAP&#x3D;200000000&quot; rocketmqinc&#x2F;rocketmq:latest sh mqbroker -c &#x2F;opt&#x2F;rocketmq-latest&#x2F;conf&#x2F;broker.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-安装-rocketmq-控制台"><a href="#3-安装-rocketmq-控制台" class="headerlink" title="3. 安装 rocketmq 控制台"></a><strong>3. 安装 rocketmq 控制台</strong></h2><p><strong>拉取镜像</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull pangliang&#x2F;rocketmq-console-ng</span><br></pre></td></tr></table></figure>
+
+<p><strong>启动容器</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -e &quot;JAVA_OPTS&#x3D;-Drocketmq.namesrv.addr&#x3D;&#123;本地外网 IP&#125;:9876 -Dcom.rocketmq.sendMessageWithVIPChannel&#x3D;false&quot; -p 8080:8080 -t pangliang&#x2F;rocketmq-console-ng</span><br></pre></td></tr></table></figure>
+
+<p>访问地址:http://本地外网 IP:8080/</p>
+<h2 id="4-Demo"><a href="#4-Demo" class="headerlink" title="4,Demo"></a>4,Demo</h2><h3 id="1-生产者"><a href="#1-生产者" class="headerlink" title="1.生产者"></a>1.生产者</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">DefaultMQProducer producer &#x3D; new DefaultMQProducer(&quot;s2&quot;);</span><br><span class="line">producer.setNamesrvAddr(&quot;121.199.21.87:9876&quot;);</span><br><span class="line">producer.start();</span><br><span class="line"></span><br><span class="line">Message msg &#x3D; new Message();</span><br><span class="line">msg.setTopic(&quot;mytopic&quot;);</span><br><span class="line">msg.setTags(&quot;mytag&quot;);</span><br><span class="line">msg.setBody(&quot;mybody&quot;.getBytes());</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">    producer.send(msg);</span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-消费者"><a href="#2-消费者" class="headerlink" title="2.消费者"></a>2.消费者</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">DefaultMQPushConsumer consumer &#x3D; new DefaultMQPushConsumer(&quot;s1&quot;);</span><br><span class="line">consumer.setNamesrvAddr(&quot;121.199.21.87:9876&quot;);</span><br><span class="line">try &#123;</span><br><span class="line">    consumer.subscribe(&quot;mytopic&quot;, &quot;mytag&quot;);</span><br><span class="line">&#125; catch (MQClientException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line">consumer.registerMessageListener(new MessageListenerConcurrently() &#123;</span><br><span class="line"></span><br><span class="line">    public ConsumeConcurrentlyStatus consumeMessage(List&lt;MessageExt&gt; msgs, ConsumeConcurrentlyContext context) &#123;</span><br><span class="line">        for(int i&#x3D;0; i&lt;msgs.size(); i++)&#123;</span><br><span class="line">            MessageExt msg &#x3D; msgs.get(i);</span><br><span class="line">            System.out.println(msg.getTopic() + &quot; &quot; + msg.getTags() + &quot; &quot; + new String(msg.getBody()));</span><br><span class="line">        &#125;</span><br><span class="line">        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">consumer.start();</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-pom-xml"><a href="#3-pom-xml" class="headerlink" title="3.pom.xml"></a>3.pom.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.netty&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;netty-all&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.6.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/blog/tags/rocketmq/" rel="tag">rocketmq</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>薛定谔的猫<br>
+    <strong>本文链接：</strong><a href="https://1765348740.github.io/blog/2020/04/25/rocketmq/" title="https:&#x2F;&#x2F;1765348740.github.io&#x2F;blog&#x2F;2020&#x2F;04&#x2F;25&#x2F;rocketmq&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;1765348740.github.io&#x2F;blog&#x2F;2020&#x2F;04&#x2F;25&#x2F;rocketmq&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/blog/js/app.js?v=1587798969594"></script>-->
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+
+</html>
